@@ -1,9 +1,11 @@
 package eth_utils
 
 import (
-	"fmt"
-	"errors"
+	//"fmt"
+	"math"
 	//"reflect"
+	"strings"
+	"errors"
 )
 
 const MinWei = 0
@@ -12,46 +14,42 @@ const MaxWei = 11579208923731619542357098500868790785326998466564056403945758400
 
 var ethUnit = map[string]float64 {
     "wei":          1,
-    "kwei":         1000,
-    "babbage":      1000,
-    "femtoether":   1000,
-	"mwei":         1000000,
-	"lovelace":     1000000,
-	"picoether":    1000000,
-	"gwei":         1000000000,
-	"shannon":      1000000000,
-	"nanoether":    1000000000,
-	"nano":         1000000000,
-	"szabo":        1000000000000,
-	"microether":   1000000000000,
-	"micro":        1000000000000,
-	"finney":       1000000000000000,
-	"milliether":   1000000000000000,
-	"milli":        1000000000000000,
-	"ether":        1000000000000000000,
-	"kether":       1000000000000000000000,
-	"grand":        1000000000000000000000,
-	"mether":       1000000000000000000000000,
-	"gether":       1000000000000000000000000000,
-	"tether":       1000000000000000000000000000000,
+    "kwei":         3,
+    "babbage":      3,
+    "femtoether":   3,
+	"mwei":         6,
+	"lovelace":     6,
+	"picoether":    6,
+	"gwei":         9,
+	"shannon":      9,
+	"nanoether":    9,
+	"nano":         9,
+	"szabo":        12,
+	"microether":   12,
+	"micro":        12,
+	"finney":       15,
+	"milliether":   15,
+	"milli":        15,
+	"ether":        18,
+	"kether":       21,
+	"grand":        21,
+	"mether":       24,
+	"gether":       27,
+	"tether":       30,
 }
 
 
 func FromWei(number uint64, unit string) (float64, error) {
-	var v = ethUnit[unit]
-	fmt.Printf("Unknown unit.  Must be one of %f", v)
-	return 0, errors.New("test")
-	//ethUnitValue, exist := ethUnit[unit]
-	//if exist == false {
-	//	keys := reflect.ValueOf(ethUnit).MapKeys()
-	//	return 0, errors.New(fmt.Printf("Unknown unit.  Must be one of %s", keys))
-	//}
-	//return 0, errors.New("test")
-	//if number == 0 {
-	//	return 0, nil
-	//}
+	v, exist := ethUnit[strings.ToLower(unit)]
+	if exist == false {
+		return 0, errors.New("illegal unit string")
+	}
+	// ほんまはMaxWeiとの比較も行いたいが、エラーになる。原因わからん。。。
+	if number < MinWei{
+		return 0, errors.New("illegal number")
+	}
 	//if number < MinWei || number > MaxWei{
-	//	return 0, errors.New(fmt.Printf("value must be between 1 and %s", MaxWei))
+	//	return 0, errors.New("illegal number")
 	//}
-	//return float64(uint64) / float64(ethUnitValue), nil
+	return float64(number) / math.Pow(10, v), nil
 }
