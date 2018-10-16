@@ -2,54 +2,70 @@ package eth_utils
 
 import (
 	//"fmt"
-	"math"
+	//"math"
 	//"reflect"
-	"strings"
+	//"strings"
 	"errors"
+	"github.com/shopspring/decimal"
 )
 
-const MinWei = 0
+const MinWei = "1"
 // 2の256乗-1
-const MaxWei = 115792089237316195423570985008687907853269984665640564039457584007913129639935
+const MaxWei = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 
-var ethUnit = map[string]float64 {
-    "wei":          1,
-    "kwei":         3,
-    "babbage":      3,
-    "femtoether":   3,
-	"mwei":         6,
-	"lovelace":     6,
-	"picoether":    6,
-	"gwei":         9,
-	"shannon":      9,
-	"nanoether":    9,
-	"nano":         9,
-	"szabo":        12,
-	"microether":   12,
-	"micro":        12,
-	"finney":       15,
-	"milliether":   15,
-	"milli":        15,
-	"ether":        18,
-	"kether":       21,
-	"grand":        21,
-	"mether":       24,
-	"gether":       27,
-	"tether":       30,
+
+func getEtherUnit(unit string) (decimal.Decimal, error) {
+	var v decimal.Decimal
+	var err error
+	switch unit {
+	case "wei":        v, err = decimal.NewFromString("1")
+	case "kwei":       v, err = decimal.NewFromString("1000")
+	case "babbage":    v, err = decimal.NewFromString("1000")
+	case "femtoether": v, err = decimal.NewFromString("1000")
+	case "mwei":       v, err = decimal.NewFromString("1000000")
+	case "lovelace":   v, err = decimal.NewFromString("1000000")
+	case "picoether":  v, err = decimal.NewFromString("1000000")
+	case "gwei":       v, err = decimal.NewFromString("1000000000")
+	case "shannon":    v, err = decimal.NewFromString("1000000000")
+	case "nanoether":  v, err = decimal.NewFromString("1000000000")
+	case "nano":       v, err = decimal.NewFromString("1000000000")
+	case "szabo":      v, err = decimal.NewFromString("1000000000000")
+	case "microether": v, err = decimal.NewFromString("1000000000000")
+	case "micro":      v, err = decimal.NewFromString("1000000000000")
+	case "finney":     v, err = decimal.NewFromString("1000000000000000")
+	case "milliether": v, err = decimal.NewFromString("1000000000000000")
+	case "milli":      v, err = decimal.NewFromString("1000000000000000")
+	case "ether":      v, err = decimal.NewFromString("1000000000000000000")
+	case "kether":     v, err = decimal.NewFromString("1000000000000000000000")
+	case "grand":      v, err = decimal.NewFromString("1000000000000000000000")
+	case "mether":     v, err = decimal.NewFromString("1000000000000000000000000")
+	case "gether":     v, err = decimal.NewFromString("1000000000000000000000000000")
+	case "tether":     v, err = decimal.NewFromString("1000000000000000000000000000000")
+	default: {
+		v, _ = decimal.NewFromString("0")
+		err = errors.New("illegal unit string")
+	}
+	}
+	return v, err
 }
 
 
-func FromWei(number uint64, unit string) (float64, error) {
-	v, exist := ethUnit[strings.ToLower(unit)]
-	if exist == false {
-		return 0, errors.New("illegal unit string")
+func FromWei(number decimal.Decimal, unit string) (decimal.Decimal, error) {
+	v, err := getEtherUnit(unit)
+	zero, _ := decimal.NewFromString("0")
+	if err != nil {
+		return zero, errors.New("illegal unit string")
 	}
-	// ほんまはMaxWeiとの比較も行いたいが、エラーになる。原因わからん。。。
-	if number < MinWei{
-		return 0, errors.New("illegal number")
+	if number.Equal(zero){
+		return zero, nil
 	}
-	//if number < MinWei || number > MaxWei{
-	//	return 0, errors.New("illegal number")
-	//}
-	return float64(number) / math.Pow(10, v), nil
+	min, _ := decimal.NewFromString(MinWei)
+	if number.Cmp(min) == -1{
+		return zero, errors.New("illegal number")
+	}
+	max, _ := decimal.NewFromString(MaxWei)
+	if number.Cmp(max) == 1{
+		return zero, errors.New("illegal number")
+	}
+	return number.Div(v), nil
 }
