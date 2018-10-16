@@ -1,10 +1,6 @@
 package eth_utils
 
 import (
-	//"fmt"
-	//"math"
-	//"reflect"
-	//"strings"
 	"errors"
 	"github.com/shopspring/decimal"
 )
@@ -59,13 +55,38 @@ func FromWei(number decimal.Decimal, unit string) (decimal.Decimal, error) {
 	if number.Equal(zero){
 		return zero, nil
 	}
+	err2 := checkWeiRange(number)
+	if err2 != nil {
+		return zero, err2
+	}
+	return number.Div(v), nil
+}
+
+func ToWei(number decimal.Decimal, unit string) (decimal.Decimal, error) {
+	v, err := getEtherUnit(unit)
+	zero, _ := decimal.NewFromString("0")
+	if err != nil {
+		return zero, errors.New("illegal unit string")
+	}
+	if number.Equal(zero){
+		return zero, nil
+	}
+	muled := number.Mul(v)
+	err2 := checkWeiRange(muled)
+	if err2 != nil {
+		return zero, err2
+	}
+	return muled, nil
+}
+
+func checkWeiRange(number decimal.Decimal) error{
 	min, _ := decimal.NewFromString(MinWei)
 	if number.Cmp(min) == -1{
-		return zero, errors.New("illegal number")
+		return errors.New("illegal number")
 	}
 	max, _ := decimal.NewFromString(MaxWei)
 	if number.Cmp(max) == 1{
-		return zero, errors.New("illegal number")
+		return errors.New("illegal number")
 	}
-	return number.Div(v), nil
+	return nil
 }

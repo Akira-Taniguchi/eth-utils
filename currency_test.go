@@ -84,3 +84,41 @@ func Test_Get_Ether_Unit_error(t *testing.T) {
 		t.Error("error")
 	}
 }
+
+
+func Test_To_Wei_1(t *testing.T) {
+	arg, _ := decimal.NewFromString("1")
+	value, err := ToWei(arg, "ether")
+	if err != nil{
+		t.Error("error")
+	}
+	v, _ := decimal.NewFromString("1000000000000000000")
+	if value.Equal(v) == false{
+		t.Error("error")
+	}
+}
+
+func Test_To_Wei_2(t *testing.T) {
+	arg, _ := decimal.NewFromString("1")
+	value, err := ToWei(arg, "wei")
+	if err != nil{
+		t.Error("error")
+	}
+	v, _ := decimal.NewFromString("1")
+	if value.Equal(v) == false{
+		t.Error("error")
+	}
+}
+
+func Test_To_Wei_3(t *testing.T) {
+	arg, _ := decimal.NewFromString("1")
+	value, err := ToWei(arg, "tether")
+	if err != nil{
+		t.Error("error")
+	}
+	v, _ := decimal.NewFromString("1000000000000000000000000000000")
+	if value.Equal(v) == false{
+		t.Error("error")
+	}
+}
+
