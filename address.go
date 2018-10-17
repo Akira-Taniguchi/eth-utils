@@ -1,18 +1,15 @@
 package eth_utils
 
 import (
-	"strconv"
+//"strconv"
 )
 
-func IsHexAddress(address string) bool{
-	i := strconv.FormatInt(address, 16)
-	strconv.ParseInt(i, 16, 32)
+func IsHexAddress(address string) bool {
+	// i := strconv.FormatInt(address, 16)
+	// strconv.ParseInt(i, 16, 32)
 	//あたまの0xけして、40文字かチェックする
 	return true
 }
-
-
-
 
 //def is_hex_address(value: Any) -> bool:
 //"""
@@ -25,4 +22,3 @@ func IsHexAddress(address string) bool{
 //else:
 //unprefixed = remove_0x_prefix(value)
 //return len(unprefixed) == 40
-
