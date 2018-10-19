@@ -1,6 +1,9 @@
 package eth_utils
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func Remove0xPrefix(value string) string {
 	if Is0xPrefixed(value) == false {
@@ -18,4 +21,17 @@ func Add0xPrefix(value string) string {
 		return value
 	}
 	return "0x" + value
+}
+
+func isHex(value string) bool {
+	fmt.Print("start")
+	if strings.ToLower(value) == "0x" {
+		return true
+	}
+	removed_0x := Remove0xPrefix(value)
+	fmt.Print("start")
+	for _, s := range removed_0x {
+		fmt.Printf("name: %s\n", s)
+	}
+	return true
 }
