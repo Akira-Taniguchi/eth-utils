@@ -1,7 +1,7 @@
 package eth_utils
 
 import (
-	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -24,14 +24,10 @@ func Add0xPrefix(value string) string {
 }
 
 func isHex(value string) bool {
-	fmt.Print("start")
 	if strings.ToLower(value) == "0x" {
 		return true
 	}
-	removed_0x := Remove0xPrefix(value)
-	fmt.Print("start")
-	for _, s := range removed_0x {
-		fmt.Printf("name: %s\n", s)
-	}
-	return true
+	removed := Remove0xPrefix(value)
+	reg := regexp.MustCompile(`^[a-fA-F0-9]*$`)
+	return reg.Match([]byte(removed))
 }

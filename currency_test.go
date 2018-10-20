@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func Test_From_Wei_1(t *testing.T) {
+func TestFromWei1(t *testing.T) {
 	arg, _ := decimal.NewFromString("1000000000000000000")
 	value, err := FromWei(arg, "ether")
 	if err != nil {
@@ -17,7 +17,7 @@ func Test_From_Wei_1(t *testing.T) {
 	}
 }
 
-func Test_From_Wei_2(t *testing.T) {
+func TestFromWei2(t *testing.T) {
 	arg, _ := decimal.NewFromString("1000000000000000000")
 	value, err := FromWei(arg, "tether")
 	if err != nil {
@@ -41,7 +41,7 @@ func Test_From_Wei_3(t *testing.T) {
 	}
 }
 
-func Test_Get_Ether_Unit_1(t *testing.T) {
+func TestGetEtherUnit1(t *testing.T) {
 	unit, err := getEtherUnit("ether")
 	if err != nil {
 		t.Error("error")
@@ -52,7 +52,7 @@ func Test_Get_Ether_Unit_1(t *testing.T) {
 	}
 }
 
-func Test_Get_Ether_Unit_2(t *testing.T) {
+func TestGetEtherUnit2(t *testing.T) {
 	unit, err := getEtherUnit("tether")
 	if err != nil {
 		t.Error("error")
@@ -63,7 +63,7 @@ func Test_Get_Ether_Unit_2(t *testing.T) {
 	}
 }
 
-func Test_Get_Ether_Unit_3(t *testing.T) {
+func TestGetEtherUnit3(t *testing.T) {
 	unit, err := getEtherUnit("wei")
 	if err != nil {
 		t.Error("error")
@@ -74,7 +74,7 @@ func Test_Get_Ether_Unit_3(t *testing.T) {
 	}
 }
 
-func Test_Get_Ether_Unit_error(t *testing.T) {
+func TestGetEtherUnitError(t *testing.T) {
 	unit, err := getEtherUnit("hoge")
 	if err == nil {
 		t.Error("error")
@@ -85,7 +85,7 @@ func Test_Get_Ether_Unit_error(t *testing.T) {
 	}
 }
 
-func Test_To_Wei_1(t *testing.T) {
+func TestToWei1(t *testing.T) {
 	arg, _ := decimal.NewFromString("1")
 	value, err := ToWei(arg, "ether")
 	if err != nil {
@@ -97,7 +97,7 @@ func Test_To_Wei_1(t *testing.T) {
 	}
 }
 
-func Test_To_Wei_2(t *testing.T) {
+func TestToWei2(t *testing.T) {
 	arg, _ := decimal.NewFromString("1")
 	value, err := ToWei(arg, "wei")
 	if err != nil {
@@ -109,7 +109,7 @@ func Test_To_Wei_2(t *testing.T) {
 	}
 }
 
-func Test_To_Wei_3(t *testing.T) {
+func TestToWei3(t *testing.T) {
 	arg, _ := decimal.NewFromString("1")
 	value, err := ToWei(arg, "tether")
 	if err != nil {
